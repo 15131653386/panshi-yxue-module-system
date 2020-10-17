@@ -1,0 +1,86 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<html>
+<head>
+    <!-- Title and other stuffs -->
+    <title>百知</title>
+    <!-- Stylesheets 样式 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link href="http://system.tjldsd.com:80/style/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://system.tjldsd.com:80/style/animate.css" />
+    <link href="http://system.tjldsd.com:80/style/loginstyle.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/static/bs/css/bootstrap.min.css"/>
+    <script src="/static/bs/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            /**
+             *
+             * @param obj 要控制的标签对象
+             * @param wait  等待的时间
+             */
+            function time(obj,wait) {
+                let $this = $(obj);
+
+                if (wait==0) {
+                    // 如果等待时间wait为0的时候，设置按钮可以触发
+                    $this.css('pointer-events','');
+                    $this.html('发送验证码');
+                    wait = 60;
+                } else {
+                    // 如果等待时间wait大于0,设置按钮禁用（不可以触发事件）
+                    $this.css('pointer-events','none');
+                    $this.html(wait+'秒后可以重新发送')
+                    // 手动减秒
+                    wait--;
+                    setTimeout(function () {
+                        // 递归调用time函数
+                        time(obj, wait);
+                    }, 1000);
+                }
+
+            }
+
+            // 点击发送验证码
+            $('#sendPhoneCode').click(function () {
+                // 控制发送验证码的周期
+                time(this, 60);
+
+                // 获取手机号 发送到后台
+
+                var phone=document.getElementById("phone").value;
+                $.ajax({
+                    type:"POST",  //请求方式
+                    url:"/app/getPhoneCode?phone="+phone,  //请求路径：页面/方法名字
+                    data: phone,    //参数
+                    dataType:"text",
+                    contentType:"application/json; charset=utf-8",
+                })
+            })
+        })
+    </script>
+</head>
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">yx</h1>
+        </div>
+        <h3>应学是你最忠诚的朋友</h3>
+        <form class="m-t"  action="/userpd/pd">
+            <div class="form-group">
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号" required="">
+                <a id="sendPhoneCode" href="javascript:void(0)" class="btn btn-default">获取验证码</a>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="code" placeholder="验证码"/>
+            </div>
+            <p style="color: #cd0a0a">${requestScope.message}</p>
+            <button type="submit" class="btn btn-primary block full-width m-b">登 录
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

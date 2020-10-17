@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.panshi.dao.VideoDao">
+
+    <resultMap id="BaseResultMap" type="com.panshi.entity.BackVideo">
+        <id column="vid" property="id" />
+        <result column="vtitle" property="title" />
+        <result column="vintro" property="intro" />
+        <result column="vcover_url" property="coverUrl" />
+        <result column="vvideo_url" property="videoUrl" />
+        <result column="vcreate_at" property="createAt" />
+        <result column="vuser_id" property="userId" />
+        <result column="vcid" property="cid" />
+        <result column="vgrp_id" property="grpId" />
+        <association property="user" javaType="com.panshi.entity.User">
+            <id column="uid" property="id"/>
+            <result column="uusername" property="username"/>
+        </association>
+        <association property="category" javaType="com.panshi.entity.Category">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </association>
+        <association property="group" javaType="com.panshi.entity.Group">
+            <id column="gid" property="id"/>
+            <result column="gname" property="name"/>
+        </association>
+        <association property="play" javaType="com.panshi.entity.Play">
+            <id column="pid" property="id"/>
+            <result column="pplay_num" property="playNum"/>
+        </association>
+    </resultMap>
+    <select id="queryblj" resultMap="BaseResultMap">
+        select v.id vid,v.title vtitle,v.intro vintro,v.cover_url vcover_url,
+               v.video_url vvideo_url,v.create_at vcreate_at,v.user_id vuser_id,
+               v.cid vcid,v.grp_id vgrp_id,u.id uid,u.username uusername,c.id cid,
+               c.name cname,g.id gid,g.name gname,p.id pid,p.play_num pplay_num
+            from yx_video v left join yx_user u on v.user_id=u.id
+                            left join yx_category c on v.cid=c.id
+                            left join yx_group g on v.grp_id=g.id
+                            left join yx_play p on v.id=p.video_id
+    </select>
+    <select id="querytiaojian" resultMap="BaseResultMap">
+        select v.id vid,v.title vtitle,v.intro vintro,v.cover_url vcover_url,
+               v.video_url vvideo_url,v.create_at vcreate_at,v.user_id vuser_id,
+               v.cid vcid,v.grp_id vgrp_id,u.id uid,u.username uusername,c.id cid,
+               c.name cname,g.id gid,g.name gname,p.id pid,p.play_num pplay_num
+        from yx_video v left join yx_user u on v.user_id=u.id
+                        left join yx_category c on v.cid=c.id
+                        left join yx_group g on v.grp_id=g.id
+                        left join yx_play p on v.id=p.video_id
+        where v.title=#{searchField}
+    </select>
+    <select id="queryvideo">
+        select * from yx_video where video_url=#{video}
+    </select>
+</mapper>
+
+
+

@@ -1,0 +1,14 @@
+.yx-nav-menu{
+    margin: 0;
+    padding: 0;
+    top: 0;
+}
+.yx-nav-panel{
+    min-height: 100vh!important;
+    padding: 0px;
+}
+.yx-nav-menu-content{
+}
+.yx-nav-menu-btn{
+    width: 100%;
+}

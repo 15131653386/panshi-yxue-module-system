@@ -1,0 +1,39 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /yingx
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+      jsp:
+        init-parameters:
+          development: true
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000000MB
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yxue?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 921111
+  redis:
+    host: 192.168.147.130
+    port: 6379
+  data:
+    elasticsearch:
+      cluster-nodes: 192.168.147.130:9300
+# mybatis相关的依赖
+mybatis-plus:
+  type-aliases-package: com.panshi.entity
+  mapper-locations: com/panshi/mapper/*Mapper.xml
+
+logging:
+  level:
+    # root是针对整个项目日志级别的设置
+    root: INFO
+    # 单独指定某个包下类里面日志的输出级别
+    com.baizhi.controller: DEBUG

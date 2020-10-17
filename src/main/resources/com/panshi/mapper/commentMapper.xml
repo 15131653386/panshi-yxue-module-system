@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.panshi.dao.CommentDao">
+
+    <resultMap id="BaseResultMap" type="com.panshi.entity.BackComment">
+        <id column="cid" property="id" />
+        <result column="ccontend" property="content" />
+        <result column="ccreateat" property="createAt" />
+        <result column="cinteractid" property="interactId" />
+        <association property="user" javaType="com.panshi.entity.User">
+            <id column="uid" property="id"/>
+            <result column="uusername" property="username"/>
+        </association>
+        <association property="video" javaType="com.panshi.entity.Video">
+            <id column="vid" property="id"/>
+            <result column="vvideourl" property="videoUrl"/>
+        </association>
+    </resultMap>
+    <resultMap id="BaseResult" type="com.panshi.entity.BackComment">
+        <id column="cid" property="id" />
+        <result column="ccontend" property="content" />
+        <result column="ccreateat" property="createAt" />
+        <result column="cinteractid" property="interactId" />
+        <association property="user" javaType="com.panshi.entity.User">
+            <id column="uid" property="id"/>
+            <result column="uusername" property="username"/>
+        </association>
+    </resultMap>
+    <select id="queryall" resultMap="BaseResultMap">
+        select c.id cid,c.content ccontend,c.create_at ccreateat,c.interact_id cinteractid,
+               u.id uid,u.username uusername,v.id vid,v.video_url vvideourl from yx_comment c left join
+                yx_user u on c.user_id=u.id
+            left join yx_video v on c.source_id=v.id where interact_id is null limit #{begin},#{end}
+    </select>
+    <select id="querytow" resultMap="BaseResult">
+        select c.id cid,c.content ccontend,c.create_at ccreateat,c.interact_id cinteractid,
+               u.id uid,u.username uusername from yx_comment c left join
+            yx_user u on c.user_id=u.id where c.interact_id=#{interactId}
+    </select>
+</mapper>
+
+
+
