@@ -39,13 +39,17 @@ public class textt {
     @Autowired
     ElasticsearchTemplate elasticsearchTemplate;
         @Test
-        public void save(){
-            List<Video> list=videoService.list();
-            for (Video video : list) {
-                videoRepository.save(video);
-            }
-
+    public void save(){
+        List<Video> list=videoService.list();
+        for (Video video : list) {
+            videoRepository.save(video);
         }
+
+    }
+    @Test
+    public void savv(){
+
+    }
     @Test
     public void queryVideo(){
 
